@@ -40,8 +40,8 @@ const Homepage = () => {
   ];
 
   return (
-    <div>
-      <Banner />
+    <div className="w-full">
+      <Banner className="w-full"/>
       <div className="flex flex-wrap justify-center">
       {products.map(product => (
         <ProductCard key={product.id} product={product} />
