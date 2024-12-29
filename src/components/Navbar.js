@@ -62,7 +62,7 @@ const Navbar = () => {
 
       {/* SMALL SCREEN NAVBAR MENU */}
       {sidebar && (
-        <nav className="navbar h-screen w-1/2 absolute top-0 right-0 flex flex-col justify-center bg-gray-400 md:hidden">
+        <nav className="navbar h-screen w-1/2 fixed z-50 top-0 right-0 flex flex-col justify-center bg-black md:hidden">
           <Link
             to="/"
             onClick={handleClick}

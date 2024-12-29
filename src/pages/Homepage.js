@@ -41,7 +41,7 @@ const Homepage = () => {
   ];
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-hidden">
       <Banner className="w-full h-full"/>
       <div className="flex flex-wrap justify-center">
       {products.map(product => (

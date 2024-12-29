@@ -28,16 +28,16 @@ export default function SimpleSlider() {
   };
 
   return (
-    <div className="mx-auto relative mt-10 w-[90%] text-white">
+    <div className="mx-auto relative mt-1 w-full text-white border-none">
       <Slider {...settings}>
         {/* Slide 1 */}
         <div className="relative flex">
           <img
-            className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transform transition duration-300 hover:scale-105"
+            className="w-full h-64 sm:h-80 md:h-96 object-cover  transform transition duration-300 hover:scale-105"
             src="https://via.placeholder.com/800x400?text=Perfume+1"
             alt="Perfume 1"
           />
-          <div className="absolute inset-0 flex flex-col justify-center bg-frame bg-cover p-6 text-right sm:text-left from-black to-transparent bg-opacity-50 rounded-xl">
+          <div className="absolute inset-0 flex flex-col justify-center bg-frame bg-cover p-6 text-right sm:text-left from-black to-transparent bg-opacity-50 ">
             <h3 className="text-2xl sm:text-3xl font-semibold mb-3">Chanel No. 5</h3>
             <p className="text-sm sm:text-lg mb-4">
               A timeless fragrance that embodies elegance and femininity.
@@ -48,10 +48,10 @@ export default function SimpleSlider() {
             </div>
             <p className="text-lg sm:text-xl font-bold mb-5">$120.00</p>
             <div className="flex justify-end sm:justify-start gap-2 sm:gap-4">
-            <button className="bg-black text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-gray-800 transition">
+              <button className=" ml-2 px-4 py-2  rounded-sm border-2 border-yellow bg-yellow text-white font-bold duration-200 ">
                 Add to Cart
               </button>
-              <button className="bg-black text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full  transition">
+              <button className=" ml-2 px-4 py-2  rounded-sm border-2 border-yellow bg-yellow text-white font-bold duration-200 ">
                 View Details
               </button>
             </div>
@@ -62,11 +62,11 @@ export default function SimpleSlider() {
         {/* Slide 2 */}
         <div className="relative flex">
           <img
-            className="w-full h-64 sm:h-80 md:h-96 object-cover rounded-xl transform transition duration-300 hover:scale-105"
+            className="w-full h-64 sm:h-80 md:h-96 object-cover  transform transition duration-300 hover:scale-105"
             src="https://via.placeholder.com/800x400?text=Perfume+2"
             alt="Perfume 2"
           />
-          <div className="absolute inset-0 flex flex-col justify-center bg-frame2 bg-cover p-6 text-right sm:text-left from-black to-transparent bg-opacity-50 rounded-xl">
+          <div className="absolute inset-0 flex flex-col justify-center bg-frame2 bg-cover p-6 text-right sm:text-left from-black to-transparent bg-opacity-50 ">
             <h3 className="text-2xl sm:text-3xl font-semibold mb-3">Dior Sauvage</h3>
             <p className="text-sm sm:text-lg mb-4">
               A bold and spicy fragrance for the modern man who defines his own path.
@@ -77,10 +77,12 @@ export default function SimpleSlider() {
             </div>
             <p className="text-lg sm:text-xl font-bold mb-5">$150.00</p>
             <div className="flex justify-end sm:justify-start gap-2 sm:gap-4">
-              <button className="bg-black text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-gray-800 transition">
+              
+
+              <button className="  ml-2 px-4 py-2  rounded-sm border-2 border-yellow bg-yellow text-white font-bold duration-200 ">
                 Add to Cart
               </button>
-              <button className="bg-black text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full  transition">
+              <button className="  ml-2 px-4 py-2  rounded-sm border-2 border-yellow bg-yellow text-white font-bold duration-200 ">
                 View Details
               </button>
             </div>
