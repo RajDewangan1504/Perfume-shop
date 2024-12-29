@@ -35,18 +35,19 @@ const Homepage = () => {
         "Windows 11 Home",
         "512 GB SSD"
       ],
+      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSjvnCZv8_0F7tZL_Flg-Cqf85vOedVmfpMVT3WaKkkQH4biq_k-ofPOVTq_x7_EuEmNI6COwkZXoovckdP1mJDqQ5jKXjWmuOXi9ppueQVF0N0-RM_f69P"
     }
     // Add more products as needed
   ];
 
   return (
     <div className="w-full">
-      <Banner className="w-full"/>
+      <Banner className="w-full h-full"/>
       <div className="flex flex-wrap justify-center">
       {products.map(product => (
         <ProductCard key={product.id} product={product} />
       ))}
-    </div>
+    </div> 
     </div>
   );
 };
