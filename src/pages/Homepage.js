@@ -3,6 +3,7 @@ import ProductCard from "../components/ProductCard";
 import Banner from "../components/Banner";
 import Brands from "../components/Brands";
 import About from "../components/About";
+import Loader from "../components/Loader"
 
 const Homepage = () => {
   const [products, setProducts] = useState([]);
@@ -33,7 +34,7 @@ const Homepage = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center">Loading products...</div>;
+    return <div className="text-center"><Loader/></div>;
   }
 
   if (error) {

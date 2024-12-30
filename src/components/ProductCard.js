@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CiShare2 } from "react-icons/ci";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const ProductCard = ({ product }) => {
   const features = product.features && Array.isArray(product.features) ? product.features : [];
 
   return (
-    
+
     <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
       <div className="relative  mx-3 mt-3 flex justify-center items-center h-60 overflow-hidden rounded-xl" >
         <img
@@ -56,12 +57,15 @@ const ProductCard = ({ product }) => {
             {/* <span className="mr-2 ml-3 rounded bg-yellow-200 px-2.5 py-0.5 text-xs font-semibold">{product.rating}</span> */}
           </div>
         </div>
-        <button
-          className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-          onClick={handleAddToCart}
-        >
-          Add to Cart
-        </button>
+        <div className="flex justify-between">
+          <button
+            className=" bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+            onClick={handleAddToCart}
+          >
+            Add to Cart
+          </button>
+          <h1 className="font-bold cursor-pointer"><CiShare2 size={30} /></h1>
+        </div>
       </div>
     </div>
   );

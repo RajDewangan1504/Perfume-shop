@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick"; // Import React Slick
+import { CiShare2 } from "react-icons/ci";
+import Loader from "../components/Loader";
 
 const ProductPage = () => {
   const { id } = useParams(); // Get product ID from the URL
@@ -64,7 +66,7 @@ const ProductPage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><Loader/></div>;
   }
 
   if (error) {
@@ -106,7 +108,10 @@ const ProductPage = () => {
 
         {/* Product Details */}
         <div className="md:w-2/3 w-full p-6">
+          <div className="flex justify-between">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.productName}</h1>
+          <h1  className="font-bold cursor-pointer"><CiShare2 size={30} /></h1>
+          </div>
           <p className="text-sm text-gray-600 mb-4">{product.description}</p>
 
           <div className="flex items-center mb-4">
