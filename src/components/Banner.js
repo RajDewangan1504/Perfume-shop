@@ -38,7 +38,7 @@ export default function SimpleSlider() {
             alt="Perfume 1"
           />
           <div className="absolute inset-0 flex flex-col justify-center bg-frame bg-cover p-6 text-right sm:text-left from-black to-transparent bg-opacity-50 ">
-            <h3 className="text-2xl sm:text-3xl font-semibold mb-3">Chanel No. 5</h3>
+            <h3 className="text-2xl sm:text-3xl font-semibold mb-3">Luna Rossa Ocean</h3>
             <p className="text-sm sm:text-lg mb-4">
               A timeless fragrance that embodies elegance and femininity.
             </p>

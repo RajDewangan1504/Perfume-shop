@@ -1,53 +1,69 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import Banner from "../components/Banner";
-
+import Brands from "../components/Brands";
+import About from "../components/About";
 
 const Homepage = () => {
-  const products = [
-    {
-      id: 1,
-      name: "HP Victus Gaming Laptop",
-      price: 899.00,
-      originalPrice: 1000.00,
-      discount: "10%",
-      rating: 4.5,
-      description: "Intel Core i5 12th Gen 12450H - (8 GB/512 GB SSD/Windows 11 Home/4 GB Graphics/NVIDIA GeForce RTX 2050)",
-      features: [
-        "Core i5 Processor (12th Gen)",
-        "8 GB DDR4 RAM",
-        "Windows 11 Home",
-        "512 GB SSD"
-      ],
-      image: "https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/8/k/15-fa1226tx-gaming-laptop-hp-original-imah4bjbx8ctzdg6.jpeg"
-    },
-    {
-      id: 2,
-      name: "HP Victus Gaming Laptop by raj",
-      price: 400.00,
-      originalPrice: 100.00,
-      discount: "10%",
-      rating: 4.5,
-      description: "Intel Core i5 12th Gen 12450H - (8 GB/512 GB SSD/Windows 11 Home/4 GB Graphics/NVIDIA GeForce RTX 2050)",
-      features: [
-        "Core i5 Processor (12th Gen)",
-        "8 GB DDR4 RAM",
-        "Windows 11 Home",
-        "512 GB SSD"
-      ],
-      image: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSjvnCZv8_0F7tZL_Flg-Cqf85vOedVmfpMVT3WaKkkQH4biq_k-ofPOVTq_x7_EuEmNI6COwkZXoovckdP1mJDqQ5jKXjWmuOXi9ppueQVF0N0-RM_f69P"
-    }
-    // Add more products as needed
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("https://olcademy-backend.onrender.com/api/v1/product/get-product");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data = await response.json();
+        if (data.success) {
+          setProducts(data.data);
+        } else {
+          throw new Error(data.message || "Error fetching products");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center">Loading products...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="w-full overflow-hidden">
-      <Banner className="w-full h-full"/>
-      <div className="flex flex-wrap justify-center">
-      {products.map(product => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div> 
+      <div >
+      
+      <Banner className="w-full h-full" />
+      </div>
+      <div className="flex flex-wrap justify-center flex-col">
+      <h1 className="text-3xl mt-10 py-5 font-bold flex justify-center  text-center" >Top Perfumes </h1>
+       <div className="grid md:grid-cols-4 grid-cols-1">
+       {products.map((product) => (
+          <ProductCard key={product._id} product={{
+            id: product._id,
+            name: product.productName,
+            price: product.price,
+            description: product.description,
+            image: product.productImage[3] || "/VillaindesireBanner.webp", // Display the first image
+            discount: null, // Adjust if discount is part of API response
+            rating: null, // Adjust if rating is part of API response
+          }} />
+        ))}
+       </div>
+      </div>
+      <Brands/>
+      <About/>
     </div>
   );
 };

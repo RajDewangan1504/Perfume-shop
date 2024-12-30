@@ -1,96 +1,155 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Slider from "react-slick"; // Import React Slick
 
 const ProductPage = () => {
-  const { id } = useParams(); // Get product id from URL params
+  const { id } = useParams(); // Get product ID from the URL
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [newReview, setNewReview] = useState(""); // State for new review input
 
-  const products = [
-    {
-      id: 1,
-      name: "HP Victus Gaming Laptop",
-      price: 899.00,
-      originalPrice: 1000.00,
-      discount: "10%",
-      rating: 4.5,
-      description: "Intel Core i5 12th Gen 12450H - (8 GB/512 GB SSD/Windows 11 Home/4 GB Graphics/NVIDIA GeForce RTX 2050)",
-      features: [
-        "Core i5 Processor (12th Gen)",
-        "8 GB DDR4 RAM",
-        "Windows 11 Home",
-        "512 GB SSD"
-      ],
-      image: "https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/8/k/15-fa1226tx-gaming-laptop-hp-original-imah4bjbx8ctzdg6.jpeg"
-    },
-    {
-      id: 2,
-      name: "HP Victus Gaming Laptop by raj",
-      price: 400.00,
-      originalPrice: 100.00,
-      discount: "10%",
-      rating: 4.5,
-      description: "Intel Core i5 12th Gen 12450H - (8 GB/512 GB SSD/Windows 11 Home/4 GB Graphics/NVIDIA GeForce RTX 2050)",
-      features: [
-        "Core i5 Processor (12th Gen)",
-        "8 GB DDR4 RAM",
-        "Windows 11 Home",
-        "512 GB SSD"
-      ],
-      image: "https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/8/k/15-fa1226tx-gaming-laptop-hp-original-imah4bjbx8ctzdg6.jpeg"
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://olcademy-backend.onrender.com/api/v1/product/product-details/${id}`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setProduct(data?.data); // Assuming API response matches your product schema
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [id]);
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (newReview) {
+      try {
+        const response = await fetch(
+          `https://olcademy-backend.onrender.com/api/v1/product/${id}/review`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ review: newReview }), // Sending the review as JSON
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Review submitted successfully:", data);
+        setNewReview(""); // Clear the review input after submission
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          review: [...prevProduct.review, newReview], // Update the review list
+        }));
+      } catch (err) {
+        setError(err.message);
+      }
     }
-    // Add more products as needed
-  ];
+  };
 
-  // Convert the id from string to number for comparison
-  const product = products.find((product) => product.id === parseInt(id));
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   if (!product) {
     return <div>Product not found</div>;
   }
 
+  // Slick settings for carousel
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 200,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,           // Enable autoplay
+    autoplaySpeed: 2000,      // Set the autoplay speed to 2000ms (2 seconds)
+  };
+
   return (
-    <div className="max-w-5xl mx-auto bg-white  rounded-lg overflow-hidden">
+    <div className="max-w-5xl mx-auto bg-white rounded-lg overflow-hidden my-10 sm:my-5">
       <div className="flex flex-col items-center md:flex-row">
-        {/* Product Image */}
-        <div className="md:w-1/3 p-4 relative">
-          <div>
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-auto object-cover rounded-lg"
-            />
-            <button className="absolute top-2 right-2 text-red-500 hover:text-red-600 focus:outline-none">
-              <svg
-                className="w-6 h-6 absolute top-0 right-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                ></path>
-              </svg>
-            </button>
-          </div>
+        {/* Product Image Carousel */}
+        <div className="md:w-1/3 w-full p-4 relative">
+          <Slider {...settings}>
+            {product.productImage.map((image, index) => (
+              <div key={index}>
+                <img
+                  src={image}
+                  alt={`${product.productName} ${index + 1}`}
+                  className="w-full h-auto object-cover rounded-lg"
+                />
+              </div>
+            ))}
+          </Slider>
         </div>
 
         {/* Product Details */}
-        <div className="md:w-2/3 p-6">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h1>
+        <div className="md:w-2/3 w-full p-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">{product.productName}</h1>
           <p className="text-sm text-gray-600 mb-4">{product.description}</p>
 
           <div className="flex items-center mb-4">
             <span className="bg-green-500 text-white text-sm font-semibold px-2.5 py-0.5 rounded">
               {product.rating} ★
             </span>
-            <span className="text-sm text-gray-500 ml-2">1,234 reviews</span>
+            <span className="text-sm text-gray-500 ml-2">{product.review.length} reviews</span>
           </div>
 
-          <ul className="text-sm text-gray-700 mb-6">
-            {product.features.map((feature, index) => (
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <span className="text-3xl font-bold text-gray-900">${product.price}</span>
+              {product.originalPrice && (
+                <span className="ml-2 text-sm font-medium text-gray-500 line-through">
+                  ${product.originalPrice}
+                </span>
+              )}
+            </div>
+            {product.discount && (
+              <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                Save {product.discount}
+              </span>
+            )}
+          </div>
+
+          <p className="text-green-600 text-sm font-semibold mb-4">Free Delivery</p>
+
+          <div className="flex space-x-4">
+            <button className="flex-1 bg-black text-white rounded hover:bg-gray-800 font-bold py-2 px-4  focus:outline-none focus:shadow-outline transition duration-300">
+              Buy Now
+            </button>
+            <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-5">
+        <div className="mb-6 mx-5">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Customer Reviews:</h2>
+          <ul className="text-sm text-gray-700">
+            {product.review.map((review, index) => (
               <li key={index} className="flex items-center mb-1">
                 <svg
                   className="w-4 h-4 mr-2 text-green-500"
@@ -106,33 +165,30 @@ const ProductPage = () => {
                     d="M5 13l4 4L19 7"
                   ></path>
                 </svg>
-                {feature}
+                {review}
               </li>
             ))}
           </ul>
+        </div>
 
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <span className="text-3xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
-              <span className="ml-2 text-sm font-medium text-gray-500 line-through">
-                ${product.originalPrice.toFixed(2)}
-              </span>
-            </div>
-            <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">
-              Save {product.discount}
-            </span>
-          </div>
-
-          <p className="text-green-600 text-sm font-semibold mb-4">Free Delivery</p>
-
-          <div className="flex space-x-4">
-            <button className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-              Buy Now
+        {/* Add New Review Form */}
+        <div className="mb-6 mx-5">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Add a Review:</h2>
+          <form onSubmit={handleReviewSubmit}>
+            <textarea
+              value={newReview}
+              onChange={(e) => setNewReview(e.target.value)}
+              rows="4"
+              className="m-5  w-[90%] sm:w-[90%] p-2 border  border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black resize-none"
+              placeholder="Write your review here..."
+            />
+            <button
+              type="submit"
+              className="mt-2 px-4 py-2 bg-black  text-white rounded hover:bg-gray-800"
+            >
+              Submit Review
             </button>
-            <button className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-              Add to Cart
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

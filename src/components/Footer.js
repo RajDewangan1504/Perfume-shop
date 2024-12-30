@@ -4,7 +4,7 @@ const Footer = () => {
     return (
 
 
-        <footer class="bg-black text-white ">
+        <footer class="bg-black text-white b-0">
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div class="md:flex md:justify-between">
                     <div class="mb-6 md:mb-0">
@@ -18,10 +18,10 @@ const Footer = () => {
                             <h2 class="mb-6 text-sm font-semibold uppercase text-white">Resources</h2>
                             <ul class="text-white font-medium">
                                 <li class="mb-4">
-                                    <a href="" class="hover:underline">Flowbite</a>
+                                    <a href="" class="hover:underline">About Us</a>
                                 </li>
                                 <li>
-                                    <a href="" class="hover:underline">Tailwind CSS</a>
+                                    <a href="" class="hover:underline">Our Social Purpose</a>
                                 </li>
                             </ul>
                         </div>
